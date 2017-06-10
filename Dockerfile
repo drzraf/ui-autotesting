@@ -5,7 +5,7 @@ EXPOSE 9222
 ENV DEBIAN_FRONTEND=noninteractive
 ENV HOME=/data DEBUG_ADDRESS=0.0.0.0 DEBUG_PORT=9222
 
-# chrome headless part
+# most "static" chrome headless part
 RUN apt-get update -qqy && apt-get -qqy install curl \
     && curl -s https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
     && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | tee /etc/apt/sources.list.d/google.list \
@@ -14,6 +14,9 @@ RUN apt-get update -qqy && apt-get -qqy install curl \
 
 RUN apt-get install -qqy $(LANG=C apt-cache depends google-chrome-beta | awk '$1~/Depends/{printf $2" "}')
 
+# most "static" npm/uglify2 part
+RUN apt-get install -qqy npm
+RUN HOME=/root npm install uglify-js-harmony -g
 
 # composer/behat part
 RUN apt-get -qqy --no-install-recommends install git unzip wget make sed \
