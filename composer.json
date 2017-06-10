@@ -4,8 +4,5 @@
         "behat/mink": "^1.7.0",
         "dmore/behat-chrome-extension": "dev-master@dev",
         "emuse/behat-html-formatter": "^0.1.0"
-    },
-    "config": {
-        "bin-dir": "bin/"
     }
 }

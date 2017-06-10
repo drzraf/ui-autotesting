@@ -13,7 +13,6 @@ RUN apt-get update -qqy && apt-get -qqy install curl \
     && apt-get -qqy --no-install-recommends install sudo ca-certificates apt-transport-https git unzip
 
 RUN apt-get install -qqy $(LANG=C apt-cache depends google-chrome-beta | awk '$1~/Depends/{printf $2" "}')
-RUN apt-get install -y --no-install-recommends google-chrome-beta
 
 
 # composer/behat part
@@ -23,10 +22,19 @@ RUN apt-get -qqy --no-install-recommends install git unzip wget make sed \
     && chmod +x /usr/local/bin/composer
 
 ADD composer.json /
-RUN composer install \
-    && sed -i '/compile/s/()/(true)/' vendor/behat/behat/src/Behat/Testwork/Cli/Application.php 
+RUN composer --no-ansi install
 
-# RUN rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+
+
+ENV CHROME_VERSION=60.0.3112.24-1
+RUN apt-get update -qqy && apt-get install -y --no-install-recommends google-chrome-beta
+
+RUN sed -i '/compile/s/()/(true)/' vendor/behat/behat/src/Behat/Testwork/Cli/Application.php 
+
+RUN apt-get -qqy --no-install-recommends install localepurge \
+  && sed -ri -e '/^(USE_DPKG|NEEDSCONFIGFIRST)/d' -e '$afr' -e '$aen' /etc/locale.nopurge \
+  && localepurge
+RUN rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 RUN google-chrome-beta --version
 
