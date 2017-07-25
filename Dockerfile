@@ -1,4 +1,4 @@
-FROM php:5.6.30-cli
+FROM php:5.6.31-cli
 LABEL maintainer "Raphaël Droz <raphael.droz@gmail.com>"
 EXPOSE 9222
 
@@ -29,10 +29,8 @@ RUN composer --no-ansi install
 
 
 
-ENV CHROME_VERSION=60.0.3112.24-1
+ENV CHROME_VERSION=60.0.3112.78-1
 RUN apt-get update -qqy && apt-get install -y --no-install-recommends google-chrome-beta
-
-RUN sed -i '/compile/s/()/(true)/' vendor/behat/behat/src/Behat/Testwork/Cli/Application.php 
 
 RUN apt-get -qqy --no-install-recommends install localepurge \
   && sed -ri -e '/^(USE_DPKG|NEEDSCONFIGFIRST)/d' -e '$afr' -e '$aen' /etc/locale.nopurge \
