@@ -19,14 +19,14 @@ RUN apt-get update -qqy && apt-get -qqy install curl \
 RUN apt-get install -qqy $(LANG=C apt-cache depends google-chrome-beta | awk '$1~/Depends/{printf $2" "}')
 
 # wp-cli/WordPress testsuite dep'. xsltproc is useful for WP XHR dumps
-RUN apt-get install -qqy zip unzip subversion mysql-client libmysqlclient-dev xsltproc 
+RUN apt-get install -qqy zip unzip subversion mysql-client libmysqlclient-dev xsltproc
 
 # most "static" npm/uglify-es part
 RUN apt-get install -qqy npm
 RUN HOME=/root npm install uglify-es -g
 
 # composer/behat/phpunit/phpcs part
-RUN apt-get -qqy --no-install-recommends install git wget make sed \
+RUN apt-get -qqy --no-install-recommends install git wget make sed jq \
     && echo "date.timezone = Europe/Paris" | tee /usr/local/etc/php/conf.d/test.ini \
     && curl -sSLo /usr/local/bin/composer https://getcomposer.org/download/1.4.2/composer.phar \
     && chmod 755 /usr/local/bin/composer \

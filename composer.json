@@ -1,9 +1,24 @@
 {
     "require-dev": {
-        "behat/behat": "^3.3.0",
+	"cweagans/composer-patches": "~1.0",
+        "behat/behat": "^3.3.1",
         "behat/mink": "^1.7.0",
         "dmore/behat-chrome-extension": "dev-master@dev",
         "dmore/chrome-mink-driver": "dev-master@dev",
-        "emuse/behat-html-formatter": "^0.1.0"
+        "emuse/behat-html-formatter": "dev-master@dev"
+    },
+    "config": {
+	"preferred-install": "source"
+    },
+    "extra": {
+	"patches": {
+	    "behat/behat": {
+		"support environment variable inside behat.yml/not part of 3.3.1": "https://github.com/Behat/Behat/commit/36a9d2788ff1d11b1a25a9bf58f7f8f73a00de6a.diff"
+	    },
+	    "emuse/behat-html-formatter": {
+		"don't hardcode screenshot path": "https://github.com/dutchiexl/BehatHtmlFormatterPlugin/commit/8d62595291a84515e83fb76f6f502e514f9adc73.diff",
+		"HTTPS URL": "https://patch-diff.githubusercontent.com/raw/dutchiexl/BehatHtmlFormatterPlugin/pull/87.diff"
+	    }
+	}
     }
 }
