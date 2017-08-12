@@ -49,6 +49,10 @@ RUN composer --no-ansi install
 ENV CHROME_VERSION=60.0.3112.78-1
 RUN apt-get update -qqy && apt-get install -y --no-install-recommends google-chrome-beta
 
+# later, when a "native" (non-selenium) Mink PHP-driver for Marionette appear
+#RUN curl https://ftp.mozilla.org/pub/firefox/releases/55.0/linux-x86_64/en-US/firefox-55.0.tar.bz2 |bunzip2 | tar -C /opt/ -xvf - \
+#    && ln -s /opt/firefox/firefox /usr/bin/firefox
+
 RUN apt-get -qqy --no-install-recommends install localepurge \
   && sed -ri -e '/^(USE_DPKG|NEEDSCONFIGFIRST)/d' -e '$afr' -e '$aen' /etc/locale.nopurge \
   && localepurge
