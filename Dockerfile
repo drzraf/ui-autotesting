@@ -18,8 +18,8 @@ RUN apt-get update -qqy && apt-get -qqy install curl \
 # Chrome deps' (should not move often, keep it in the initial step of container build)
 RUN apt-get install -qqy $(LANG=C apt-cache depends google-chrome-beta | awk '$1~/Depends/{printf $2" "}')
 
-# wp-cli/WordPress testsuite dep'. xsltproc is useful for WP XHR dumps
-RUN apt-get install -qqy zip unzip subversion mysql-client libmysqlclient-dev xsltproc
+# wp-cli/WordPress testsuite dep'. xsltproc/xpath is useful for WP XHR dumps
+RUN apt-get install -qqy zip unzip subversion mysql-client libmysqlclient-dev xsltproc libxml-xpath-perl
 
 # most "static" npm/uglify-es part
 RUN apt-get install -qqy npm

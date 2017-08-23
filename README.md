@@ -9,5 +9,5 @@ Building a docker image for an user interface automatic testing ([Docker Hub](ht
   * [behat-mink](https://gitlab.com/DMore/behat-chrome-extension) Chrome extension
 * Wordpress [wp-cli](http://wp-cli.org/)
 * [uglify-js](https://github.com/mishoo/UglifyJS2/tree/harmony) (uglify-es)
-* xsltproc, jq
+* xsltproc, xpath, jq
 * svn, git, unzip, make & curl
