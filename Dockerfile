@@ -16,7 +16,7 @@ RUN apt-get update -qqy && apt-get -qqy install curl \
     && apt-get -qqy --no-install-recommends install sudo ca-certificates apt-transport-https git unzip
 
 # Chrome deps' (should not move often, keep it in the initial step of container build)
-RUN apt-get install -qqy $(LANG=C apt-cache depends google-chrome-beta | awk '$1~/Depends/{printf $2" "}')
+RUN apt-get install -qqy $(LANG=C apt-cache depends google-chrome-stable | awk '$1~/Depends/{printf $2" "}')
 
 # wp-cli/WordPress testsuite dep'. xsltproc/xpath is useful for WP XHR dumps
 RUN apt-get install -qqy zip unzip subversion mysql-client libmysqlclient-dev xsltproc libxml-xpath-perl
@@ -36,7 +36,7 @@ RUN apt-get -qqy --no-install-recommends install git wget make sed jq \
     && chmod 755 /usr/local/bin/phpcs \
     && curl -sSLo /usr/local/bin/phpcbf https://squizlabs.github.io/PHP_CodeSniffer/phpcbf.phar \
     && chmod 755 /usr/local/bin/phpcbf \
-    && curl -sSLo /usr/local/bin/wp https://github.com/wp-cli/wp-cli/releases/download/v1.2.1/wp-cli-1.2.1.phar \
+    && curl -sSLo /usr/local/bin/wp https://github.com/wp-cli/wp-cli/releases/download/v1.3.0/wp-cli-1.3.0.phar \
     && chmod 755 /usr/local/bin/wp \
     && curl -sSLo /usr/local/bin/behat https://github.com/Behat/Behat/releases/download/v3.3.0/behat.phar \
     && chmod 755 /usr/local/bin/behat
@@ -46,8 +46,8 @@ RUN composer --no-ansi install
 
 
 
-ENV CHROME_VERSION=60.0.3112.78-1
-RUN apt-get update -qqy && apt-get install -y --no-install-recommends google-chrome-beta
+ENV CHROME_VERSION=61.0.3163.79-1
+RUN apt-get update -qqy && apt-get install -y --no-install-recommends google-chrome-stable
 
 # later, when a "native" (non-selenium) Mink PHP-driver for Marionette appear
 #RUN curl https://ftp.mozilla.org/pub/firefox/releases/55.0/linux-x86_64/en-US/firefox-55.0.tar.bz2 |bunzip2 | tar -C /opt/ -xvf - \
@@ -58,7 +58,7 @@ RUN apt-get -qqy --no-install-recommends install localepurge \
   && localepurge
 RUN rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
-RUN google-chrome-beta --version
+RUN google-chrome-stable --version
 
 ADD start.sh /usr/bin/
 RUN chmod +x /usr/bin/start.sh

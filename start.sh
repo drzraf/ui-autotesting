@@ -7,4 +7,4 @@ if [ -n "$CHROME_OPTS" ]; then
 fi
 
 # Start Chrome
-exec sh -c "/usr/bin/google-chrome-beta $CHROME_ARGS"
+exec sh -c "/usr/bin/google-chrome-stable $CHROME_ARGS"
