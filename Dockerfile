@@ -3,6 +3,7 @@ LABEL maintainer "Raphaël Droz <raphael.droz@gmail.com>"
 EXPOSE 9222
 
 # Note: track https://git.alpinelinux.org/cgit/aports/log/community/chromium
+# https://github.com/westy92/headless-chrome-alpine/blob/master/Dockerfile
 # for Chromium 60 then switch to Alpine and use php* dist packages
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -28,7 +29,7 @@ RUN HOME=/root npm install uglify-es -g
 # composer/behat/phpunit/phpcs part
 RUN apt-get -qqy --no-install-recommends install git wget make sed jq \
     && echo "date.timezone = Europe/Paris" | tee /usr/local/etc/php/conf.d/test.ini \
-    && curl -sSLo /usr/local/bin/composer https://getcomposer.org/download/1.4.2/composer.phar \
+    && curl -sSLo /usr/local/bin/composer https://getcomposer.org/download/1.5.2/composer.phar \
     && chmod 755 /usr/local/bin/composer \
     && curl -sSLo /usr/local/bin/phpunit https://phar.phpunit.de/phpunit-5.7.phar \
     && chmod 755 /usr/local/bin/phpunit \
@@ -45,8 +46,7 @@ ADD composer.json /
 RUN composer --no-ansi install
 
 
-
-ENV CHROME_VERSION=61.0.3163.79-1
+ENV CHROME_VERSION=61.0.3163.91-1
 RUN apt-get update -qqy && apt-get install -y --no-install-recommends google-chrome-stable
 
 # later, when a "native" (non-selenium) Mink PHP-driver for Marionette appear
