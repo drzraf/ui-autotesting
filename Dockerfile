@@ -20,7 +20,7 @@ RUN apt-get update -qqy && apt-get -qqy install curl \
 RUN apt-get install -qqy $(LANG=C apt-cache depends google-chrome-stable | awk '$1~/Depends/{printf $2" "}')
 
 # wp-cli/WordPress testsuite dep'. xsltproc/xpath is useful for WP XHR dumps
-RUN apt-get install -qqy zip unzip subversion mysql-client libmysqlclient-dev xsltproc libxml-xpath-perl
+RUN apt-get install -qqy zip unzip subversion mysql-client libmysqlclient-dev xsltproc libxml-xpath-perl python3-rjsmin
 
 # most "static" npm/uglify-es part
 RUN apt-get install -qqy npm
@@ -46,7 +46,7 @@ ADD composer.json /
 RUN composer --no-ansi install
 
 
-ENV CHROME_VERSION=61.0.3163.91-1
+ENV CHROME_VERSION=61.0.3163.100-1
 RUN apt-get update -qqy && apt-get install -y --no-install-recommends google-chrome-stable
 
 # later, when a "native" (non-selenium) Mink PHP-driver for Marionette appear
