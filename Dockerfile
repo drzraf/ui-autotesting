@@ -12,7 +12,7 @@ ENV HOME=/data DEBUG_ADDRESS=0.0.0.0 DEBUG_PORT=9222
 # most "static" chrome headless part
 RUN apt-get update -qqy && apt-get -qqy install curl \
     && curl -s https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | tee /etc/apt/sources.list.d/google.list \
+    && echo "deb https://dl-ssl.google.com/linux/chrome/deb/ stable main" | tee /etc/apt/sources.list.d/google.list \
     && apt-get -qqy update \
     && apt-get -qqy --no-install-recommends install sudo ca-certificates apt-transport-https git unzip
 
@@ -20,12 +20,13 @@ RUN apt-get update -qqy && apt-get -qqy install curl \
 RUN apt-get install -qqy $(LANG=C apt-cache depends google-chrome-stable | awk '$1~/Depends/{printf $2" "}')
 
 # wp-cli/WordPress testsuite dep'. xsltproc/xpath is useful for WP XHR dumps
-RUN apt-get install -qqy zip unzip subversion mysql-client libmysqlclient-dev xsltproc libxml-xpath-perl python3-rjsmin
+RUN apt-get install -qqy zip unzip subversion mysql-client libmysqlclient-dev xsltproc libxml-xpath-perl
 
 # most "static" npm/uglify-es part
 RUN apt-get install -qqy npm
 RUN HOME=/root npm install uglify-es -g
 
+# NB: python3-rjsmin isn't available in php:5.6's Debian image
 # composer/behat/phpunit/phpcs part
 RUN apt-get -qqy --no-install-recommends install git wget make sed jq \
     && echo "date.timezone = Europe/Paris" | tee /usr/local/etc/php/conf.d/test.ini \
@@ -45,7 +46,8 @@ RUN apt-get -qqy --no-install-recommends install git wget make sed jq \
 ADD composer.json /
 RUN composer --no-ansi install
 
-
+# Grab latest version
+# GET https://dl-ssl.google.com/linux/chrome/deb/dists/stable/main/binary-amd64/Packages|sed -n '/google-chrome-stable/{n;p;q}'
 ENV CHROME_VERSION=61.0.3163.100-1
 RUN apt-get update -qqy && apt-get install -y --no-install-recommends google-chrome-stable
 
