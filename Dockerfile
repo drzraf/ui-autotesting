@@ -10,11 +10,11 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV HOME=/data DEBUG_ADDRESS=0.0.0.0 DEBUG_PORT=9222
 
 # most "static" chrome headless part
-RUN apt-get update -qqy && apt-get -qqy install curl \
+RUN apt-get update -qqy && apt-get -qqy install curl apt-transport-https \
     && curl -s https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
     && echo "deb https://dl-ssl.google.com/linux/chrome/deb/ stable main" | tee /etc/apt/sources.list.d/google.list \
     && apt-get -qqy update \
-    && apt-get -qqy --no-install-recommends install sudo ca-certificates apt-transport-https git unzip
+    && apt-get -qqy --no-install-recommends install sudo ca-certificates git unzip
 
 # Chrome deps' (should not move often, keep it in the initial step of container build)
 RUN apt-get install -qqy $(LANG=C apt-cache depends google-chrome-stable | awk '$1~/Depends/{printf $2" "}')
