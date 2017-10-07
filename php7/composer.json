@@ -1,0 +1,21 @@
+{
+    "require-dev": {
+	"cweagans/composer-patches": "~1.0",
+        "behat/behat": "^3.4.1",
+        "behat/mink": "^1.7.0",
+        "dmore/behat-chrome-extension": "dev-master@dev",
+        "dmore/chrome-mink-driver": "dev-master@dev",
+        "emuse/behat-html-formatter": "dev-master@dev"
+    },
+    "config": {
+	"preferred-install": "source"
+    },
+    "extra": {
+	"patches": {
+	    "emuse/behat-html-formatter": {
+		"don't hardcode screenshot path": "https://github.com/dutchiexl/BehatHtmlFormatterPlugin/commit/8d62595291a84515e83fb76f6f502e514f9adc73.diff",
+		"HTTPS URL": "https://patch-diff.githubusercontent.com/raw/dutchiexl/BehatHtmlFormatterPlugin/pull/87.diff"
+	    }
+	}
+    }
+}
