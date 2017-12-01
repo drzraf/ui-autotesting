@@ -15,7 +15,7 @@ RUN apt-get update -qqy && apt-get -qqy install curl apt-transport-https \
     && curl -s https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
     && echo "deb https://dl-ssl.google.com/linux/chrome/deb/ stable main" | tee /etc/apt/sources.list.d/google.list \
     && apt-get -qqy update \
-    && apt-get -qqy --no-install-recommends install sudo ca-certificates git unzip
+    && apt-get -qqy --no-install-recommends install sudo ca-certificates git unzip nano
 
 # Chrome deps' (should not move often, keep it in the initial step of container build)
 RUN apt-get install -qqy $(LANG=C apt-cache depends google-chrome-stable | awk '$1~/Depends/{printf $2" "}')
@@ -42,14 +42,15 @@ RUN apt-get -qqy --no-install-recommends install git wget make sed jq \
     && curl -sSLo /usr/local/bin/wp https://github.com/wp-cli/wp-cli/releases/download/v1.3.0/wp-cli-1.3.0.phar \
     && chmod 755 /usr/local/bin/wp \
     && curl -sSLo /usr/local/bin/behat https://github.com/Behat/Behat/releases/download/v3.3.0/behat.phar \
-    && chmod 755 /usr/local/bin/behat
-
+    && chmod 755 /usr/local/bin/behat \
+    && curl -sSLo /usr/local/bin/yarn https://nightly.yarnpkg.com/yarn-1.3.2-20171127.1833.js \
+    && chmod 755 /usr/local/bin/yarn
 ADD composer.json /
 RUN composer --no-ansi install
 
 # Grab latest version
 # GET https://dl-ssl.google.com/linux/chrome/deb/dists/stable/main/binary-amd64/Packages|sed -n '/google-chrome-stable/{n;p;q}'
-ENV CHROME_VERSION=61.0.3163.100-1
+ENV CHROME_VERSION=62.0.3202.94-1
 RUN apt-get update -qqy && apt-get install -y --no-install-recommends google-chrome-stable
 
 # later, when a "native" (non-selenium) Mink PHP-driver for Marionette appear

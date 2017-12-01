@@ -3,8 +3,9 @@
 	"cweagans/composer-patches": "~1.0",
         "behat/behat": "^3.4.1",
         "behat/mink": "^1.7.0",
-        "dmore/behat-chrome-extension": "dev-master@dev",
-        "dmore/chrome-mink-driver": "dev-master@dev",
+	"behat/mink-extension": "^2.0",
+        "dmore/behat-chrome-extension": "*",
+        "dmore/chrome-mink-driver": "2.2.0",
         "emuse/behat-html-formatter": "dev-master@dev"
     },
     "config": {
