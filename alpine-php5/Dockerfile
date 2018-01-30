@@ -3,14 +3,14 @@ FROM alpine:edge
 LABEL maintainer "Raphaël Droz <raphael.droz@gmail.com>"
 
 RUN echo @testing http://dl-cdn.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories \
-    && apk add --no-cache chromium bash wget curl git make sed php7-curl php7-openssl php7-json php7 nano jq zip subversion yarn composer@testing
+    && apk add --no-cache chromium bash wget curl git make sed php5-curl php5-openssl php5-json php5 nano jq zip subversion yarn composer@testing
 
 # wp-cli/WordPress testsuite dep'. xsltproc/xpath is useful for WP XHR dumps
 # mysql-client xsltproc libxml-xpath-perl python3-rjsmin
 
 # behat/phpunit/phpcs part
-RUN echo "date.timezone = Europe/Paris" | tee /etc/php7/conf.d/80_timezone.ini \
-    && curl -sSLo /usr/local/bin/phpunit https://phar.phpunit.de/phpunit-6.5.5.phar \
+RUN echo "date.timezone = Europe/Paris" | tee /etc/php5/conf.d/80_timezone.ini \
+    && curl -sSLo /usr/local/bin/phpunit https://phar.phpunit.de/phpunit-5.7.phar \
     && chmod 755 /usr/local/bin/phpunit \
     && curl -sSLo /usr/local/bin/phpcs https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar \
     && chmod 755 /usr/local/bin/phpcs \
