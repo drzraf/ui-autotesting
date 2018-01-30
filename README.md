@@ -11,3 +11,7 @@ Build a docker image for an user interface automatic testing [Docker Hub](https:
 * [uglify-js](https://github.com/mishoo/UglifyJS2/tree/harmony) (uglify-es)
 * xsltproc, xpath, jq
 * svn, git, unzip, make & curl
+
+Other flavors/images:
+* alpine-php7: Chromium + php-cli, based on Alpine (PHP7 only)
+* webpack: just webpack
