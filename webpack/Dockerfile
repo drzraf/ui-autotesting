@@ -1,10 +1,7 @@
 FROM node:8-alpine
-MAINTAINER Justin Firth <jmfirth@gmail.com>
+MAINTAINER Raphaël Droz <raphael.droz@gmail.com>
 
-RUN npm install -g webpack webpack-dev-server
-
+RUN apk add --no-cache  wget curl git make sed nano && npm install -g webpack webpack-dev-server uglify-es
 VOLUME /app
-
 EXPOSE 3000
-
 WORKDIR /app
