@@ -3,7 +3,7 @@ FROM alpine:edge
 LABEL maintainer "Raphaël Droz <raphael.droz@gmail.com>"
 
 RUN echo @testing http://dl-cdn.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories \
-    && apk add --no-cache chromium bash wget curl git make sed php7-curl php7-openssl php7-json php7 nano jq zip subversion yarn composer@testing
+    && apk add --no-cache chromium bash wget curl git make sed php7-curl php7-openssl php7-json php7-dom php7 nano jq zip subversion yarn composer@testing
 
 # wp-cli/WordPress testsuite dep'. xsltproc/xpath is useful for WP XHR dumps
 # mysql-client xsltproc libxml-xpath-perl python3-rjsmin
