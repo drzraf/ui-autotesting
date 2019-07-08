@@ -1,8 +1,11 @@
-FROM alpine:edge
+FROM alpine:3.9
 LABEL maintainer "Raphaël Droz <raphael.droz@gmail.com>"
 
-RUN echo @testing http://dl-cdn.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories \
-    && apk add --no-cache chromium bash wget curl git make sed php$$PHP_VERSION-curl php$$PHP_VERSION-openssl php$$PHP_VERSION-json php$$PHP_VERSION-dom php$$PHP_VERSION nano jq zip subversion yarn composer@testing
+ADD https://dl.bintray.com/php-alpine/key/php-alpine.rsa.pub /etc/apk/keys/php-alpine.rsa.pub
+RUN apk --no-cache add ca-certificates && echo "https://dl.bintray.com/php-alpine/v3.9/php-7.3" >> /etc/apk/repositories \
+    && apk add --no-cache chromium less bash wget curl git make sed nano jq zip subversion yarn mariadb-client patch \
+       php$$PHP_VERSION php$$PHP_VERSION-fpm php$$PHP_VERSION-curl php$$PHP_VERSION-openssl php$$PHP_VERSION-iconv php$$PHP_VERSION-mbstring php$$PHP_VERSION-json php$$PHP_VERSION-dom php$$PHP_VERSION-mysqli php$$PHP_VERSION-gd php$$PHP_VERSION-soap \
+       php$$PHP_VERSION-xdebug php$$PHP_VERSION-ctype php$$PHP_VERSION-phar php$$PHP_VERSION-xml php$$PHP_VERSION-xmlreader
 
 # wp-cli/WordPress testsuite dep'. xsltproc/xpath is useful for WP XHR dumps
 # mysql-client xsltproc libxml-xpath-perl python3-rjsmin
@@ -10,15 +13,12 @@ RUN echo @testing http://dl-cdn.alpinelinux.org/alpine/edge/testing >> /etc/apk/
 # behat/phpunit/phpcs part
 RUN echo "date.timezone = Europe/Paris" | tee /etc/php$$PHP_VERSION/conf.d/80_timezone.ini \
     && curl -sSLo /usr/local/bin/phpunit https://phar.phpunit.de/phpunit-$$PHPUNIT_VERSION.phar \
-    && chmod 755 /usr/local/bin/phpunit \
+    && curl -sSLo /usr/local/bin/composer https://getcomposer.org/download/1.8.6/composer.phar \
     && curl -sSLo /usr/local/bin/phpcs https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar \
-    && chmod 755 /usr/local/bin/phpcs \
     && curl -sSLo /usr/local/bin/phpcbf https://squizlabs.github.io/PHP_CodeSniffer/phpcbf.phar \
-    && chmod 755 /usr/local/bin/phpcbf \
-    && curl -sSLo /usr/local/bin/wp https://github.com/wp-cli/wp-cli/releases/download/v1.4.1/wp-cli-1.4.1.phar \
-    && chmod 755 /usr/local/bin/wp \
+    && curl -sSLo /usr/local/bin/wp https://github.com/wp-cli/wp-cli/releases/download/v2.2.0/wp-cli-2.2.0.phar \
     && curl -sSLo /usr/local/bin/behat https://github.com/Behat/Behat/releases/download/v3.3.0/behat.phar \
-    && chmod 755 /usr/local/bin/behat
+    && chmod 755 /usr/local/bin/*
 
 ENV DEBUG_ADDRESS=0.0.0.0 DEBUG_PORT=9222
 ADD start.sh /usr/bin/
