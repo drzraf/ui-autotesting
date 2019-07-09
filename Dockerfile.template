@@ -6,6 +6,10 @@ EXPOSE 9222
 # https://github.com/westy92/headless-chrome-alpine/blob/master/Dockerfile
 # for Chromium 60 then switch to Alpine and use php* dist packages
 
+# Grab latest version
+# GET https://dl-ssl.google.com/linux/chrome/deb/dists/stable/main/binary-amd64/Packages|sed -n '/google-chrome-stable/{n;p;q}'
+ENV CHROME_VERSION=75.0.3770.100-1
+
 ENV DEBIAN_FRONTEND=noninteractive
 ENV HOME=/data DEBUG_ADDRESS=0.0.0.0 DEBUG_PORT=9222
 
@@ -14,54 +18,38 @@ RUN apt-get update -qqy && apt-get -qqy install curl gnupg2 apt-transport-https 
     && curl -s https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
     && echo "deb https://dl-ssl.google.com/linux/chrome/deb/ stable main" | tee /etc/apt/sources.list.d/google.list \
     && apt-get -qqy update \
-    && apt-get -qqy --no-install-recommends install sudo ca-certificates git unzip nano socat
+    && apt-get -qqy --no-install-recommends install sudo ca-certificates git unzip nano socat localepurge
 
 # Chrome deps' (should not move often, keep it in the initial step of container build)
 RUN apt-get install -qqy $(LANG=C apt-cache depends google-chrome-stable | awk '$1~/Depends/{printf $2" "}')
 
 # wp-cli/WordPress testsuite dep'. xsltproc/xpath is useful for WP XHR dumps
-RUN apt-get install -qqy zip unzip subversion mysql-client libmysqlclient-dev xsltproc libxml-xpath-perl
-
-# most "static" npm/uglify-es part
-RUN apt-get install -qqy npm
-RUN HOME=/root npm install uglify-es -g
+RUN apt-get install -qqy zip unzip subversion mysql-client xsltproc libxml-xpath-perl yarn
 
 # NB: python3-rjsmin isn't available in php:5.6's Debian image
 # composer/behat/phpunit/phpcs part
 RUN apt-get -qqy --no-install-recommends install git wget make sed jq \
     && echo "date.timezone = Europe/Paris" | tee /usr/local/etc/php/conf.d/test.ini \
     && curl -sSLo /usr/local/bin/composer https://getcomposer.org/download/1.8.6/composer.phar \
-    && chmod 755 /usr/local/bin/composer \
     && curl -sSLo /usr/local/bin/phpunit https://phar.phpunit.de/phpunit-$$PHPUNIT_VERSION.phar \
-    && chmod 755 /usr/local/bin/phpunit \
     && curl -sSLo /usr/local/bin/phpcs https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar \
-    && chmod 755 /usr/local/bin/phpcs \
     && curl -sSLo /usr/local/bin/phpcbf https://squizlabs.github.io/PHP_CodeSniffer/phpcbf.phar \
-    && chmod 755 /usr/local/bin/phpcbf \
     && curl -sSLo /usr/local/bin/wp https://github.com/wp-cli/wp-cli/releases/download/v2.2.0/wp-cli-2.2.0.phar \
-    && chmod 755 /usr/local/bin/wp \
     && curl -sSLo /usr/local/bin/behat https://github.com/Behat/Behat/releases/download/v3.3.0/behat.phar \
-    && chmod 755 /usr/local/bin/behat \
     && curl -sSLo /usr/local/bin/yarn https://nightly.yarnpkg.com/yarn-1.3.2-20171127.1833.js \
-    && chmod 755 /usr/local/bin/yarn
+    && chmod 755 /usr/local/bin/*
 ADD composer.json /
-RUN composer --no-ansi install
 
-# Grab latest version
-# GET https://dl-ssl.google.com/linux/chrome/deb/dists/stable/main/binary-amd64/Packages|sed -n '/google-chrome-stable/{n;p;q}'
-ENV CHROME_VERSION=62.0.3202.94-1
-RUN apt-get update -qqy && apt-get install -y --no-install-recommends google-chrome-stable
+# most "static" yarn/uglify-es part
+RUN apt-get -qqy install nodejs
+RUN HOME=/root yarn global add uglify-es && composer --no-ansi install
+RUN apt-get install -y --no-install-recommends google-chrome-stable
 
 # later, when a "native" (non-selenium) Mink PHP-driver for Marionette appear
-#RUN curl https://ftp.mozilla.org/pub/firefox/releases/55.0/linux-x86_64/en-US/firefox-55.0.tar.bz2 |bunzip2 | tar -C /opt/ -xvf - \
+#RUN curl https://ftp.mozilla.org/pub/firefox/releases/68.0/linux-x86_64/en-US/firefox-68.0.tar.bz2 | bunzip2 | tar -C /opt/ -xvf - \
 #    && ln -s /opt/firefox/firefox /usr/bin/firefox
 
-RUN apt-get -qqy --no-install-recommends install localepurge \
-  && sed -ri -e '/^(USE_DPKG|NEEDSCONFIGFIRST)/d' -e '$afr' -e '$aen' /etc/locale.nopurge \
-  && localepurge
-RUN rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-
-RUN google-chrome-stable --version
+RUN sed -ri -e '/^(USE_DPKG|NEEDSCONFIGFIRST)/d' -e '$afr' -e '$aen' /etc/locale.nopurge && localepurge && rm -rf /var/lib/apt/lists/* /var/cache/apt/* && google-chrome-stable --version
 
 ADD start.sh /usr/bin/
 RUN chmod +x /usr/bin/start.sh
