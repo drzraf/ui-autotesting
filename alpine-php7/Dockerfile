@@ -4,7 +4,7 @@ LABEL maintainer "Raphaël Droz <raphael.droz@gmail.com>"
 
 ADD https://dl.bintray.com/php-alpine/key/php-alpine.rsa.pub /etc/apk/keys/php-alpine.rsa.pub
 RUN apk --no-cache add ca-certificates && echo "https://dl.bintray.com/php-alpine/v3.9/php-7.3" >> /etc/apk/repositories \
-    && apk add --no-cache chromium less bash wget curl git make sed nano jq zip subversion yarn mariadb-client patch \
+    && apk add --no-cache chromium less bash wget curl git make sed nano jq zip subversion yarn socat fping mariadb-client patch \
        php7 php7-fpm php7-curl php7-openssl php7-iconv php7-mbstring php7-json php7-dom php7-mysqli php7-gd php7-soap \
        php7-xdebug php7-ctype php7-phar php7-xml php7-xmlreader
 
