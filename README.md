@@ -1,6 +1,9 @@
 Build a docker image for an user interface automatic testing [Docker Hub](https://hub.docker.com/r/drzraf/ui-autotesting/)
 
-* based on [php:5.6.31-cli](https://github.com/docker-library/php/blob/master/5.6/Dockerfile) (PHP 5.6 / Debian Jessie)
+* based on official:
+  * [Alpine 3.9 php:7.3] (Chromium + php-cli)
+  * [php:7.3-cli](https://github.com/docker-library/php/blob/master/5.6/Dockerfile))
+  * Jessie's [php:5.6.31-cli](https://github.com/docker-library/php/blob/master/5.6/Dockerfile)
 * [chrome-headless](https://developers.google.com/web/updates/2017/04/headless-chrome) 61
 * [firefox-headless](https://developer.mozilla.org/en-US/Firefox/Headless_mode) 55 [later]
 * composer, phpunit, phpcs
@@ -13,5 +16,4 @@ Build a docker image for an user interface automatic testing [Docker Hub](https:
 * svn, git, unzip, make & curl
 
 Other flavors/images:
-* alpine-php7: Chromium + php-cli, based on Alpine (PHP7 only)
 * webpack: just webpack

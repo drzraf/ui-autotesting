@@ -13,7 +13,7 @@ RUN apk --no-cache add ca-certificates && echo "https://dl.bintray.com/php-alpin
 
 # behat/phpunit/phpcs part
 RUN echo "date.timezone = Europe/Paris" | tee /etc/php7/conf.d/80_timezone.ini \
-    && curl -sSLo /usr/local/bin/phpunit https://phar.phpunit.de/phpunit-8.2.4.phar \
+    && curl -sSLo /usr/local/bin/phpunit https://phar.phpunit.de/phpunit-8.4.2.phar \
     && curl -sSLo /usr/local/bin/composer https://getcomposer.org/download/1.8.6/composer.phar \
     && curl -sSLo /usr/local/bin/phpcs https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar \
     && curl -sSLo /usr/local/bin/phpcbf https://squizlabs.github.io/PHP_CodeSniffer/phpcbf.phar \
@@ -23,7 +23,7 @@ RUN echo "date.timezone = Europe/Paris" | tee /etc/php7/conf.d/80_timezone.ini \
 
 ENV DEBUG_ADDRESS=0.0.0.0 DEBUG_PORT=9222
 ADD start.sh /usr/bin/
-RUN chromium-browser --version && chmod +x /usr/bin/start.sh
+RUN chromium-browser --version && chmod +x /usr/bin/start.sh && ln -s /usr/bin/php7 /usr/bin/php
 
 CMD ["/usr/bin/start.sh"]
 

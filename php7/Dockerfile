@@ -31,11 +31,11 @@ RUN apt-get install -qqy zip unzip subversion mysql-client xsltproc libxml-xpath
 # composer/behat/phpunit/phpcs part
 RUN apt-get -qqy --no-install-recommends install git wget make sed jq \
     && echo "date.timezone = Europe/Paris" | tee /usr/local/etc/php/conf.d/test.ini \
-    && curl -sSLo /usr/local/bin/composer https://getcomposer.org/download/1.8.6/composer.phar \
-    && curl -sSLo /usr/local/bin/phpunit https://phar.phpunit.de/phpunit-8.2.4.phar \
+    && curl -sSLo /usr/local/bin/composer https://getcomposer.org/download/1.9.0/composer.phar \
+    && curl -sSLo /usr/local/bin/phpunit https://phar.phpunit.de/phpunit-8.4.2.phar \
     && curl -sSLo /usr/local/bin/phpcs https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar \
     && curl -sSLo /usr/local/bin/phpcbf https://squizlabs.github.io/PHP_CodeSniffer/phpcbf.phar \
-    && curl -sSLo /usr/local/bin/wp https://github.com/wp-cli/wp-cli/releases/download/v2.2.0/wp-cli-2.2.0.phar \
+    && curl -sSLo /usr/local/bin/wp https://github.com/wp-cli/wp-cli/releases/download/v2.3.0/wp-cli-2.3.0.phar \
     && curl -sSLo /usr/local/bin/behat https://github.com/Behat/Behat/releases/download/v3.3.0/behat.phar \
     && curl -sSLo /usr/local/bin/yarn https://nightly.yarnpkg.com/yarn-1.3.2-20171127.1833.js \
     && chmod 755 /usr/local/bin/*
