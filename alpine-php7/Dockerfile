@@ -8,6 +8,8 @@ RUN apk --no-cache add ca-certificates && echo "https://dl.bintray.com/php-alpin
        php7 php7-fpm php7-curl php7-pdo_sqlite php7-pdo_mysql php7-openssl php7-iconv php7-mbstring php7-json php7-dom php7-mysqli php7-gd php7-soap \
        php7-xdebug php7-ctype php7-phar php7-session php7-xml php7-xmlreader
 
+RUN apk add php7-pecl-pcov --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing
+
 # wp-cli/WordPress testsuite dep'. xsltproc/xpath is useful for WP XHR dumps
 # mysql-client xsltproc libxml-xpath-perl python3-rjsmin
 
