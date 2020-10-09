@@ -10,7 +10,7 @@ before_script:
 build:
   stage: build
   script:
-    - docker build $CI_REGISTRY_IMAGE/ui-autotesting:node-browsers node-browsers/
-    - docker build $CI_REGISTRY_IMAGE/ui-autotesting:alpine-php7 alpine-php7/
+    - docker build -t $CI_REGISTRY_IMAGE/ui-autotesting:node-browsers node-browsers/
+    - docker build -t $CI_REGISTRY_IMAGE/ui-autotesting:alpine-php7 alpine-php7/
     - docker push $CI_REGISTRY_IMAGE/ui-autotesting:node-browsers
     - docker push $CI_REGISTRY_IMAGE/ui-autotesting:alpine-php7
